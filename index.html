@@ -4,621 +4,647 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>completIQ — The AI-Powered Virtual Twin of Every Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black:      #07090f;
-  --black2:     #0b0e18;
-  --surface:    #0f1320;
-  --border:     rgba(255,255,255,0.07);
-  --border2:    rgba(255,255,255,0.14);
-  --blue:       #5b9cf6;
-  --blue2:      #2563eb;
-  --blue3:      #1a3d8f;
-  --blue-dim:   rgba(91,156,246,0.09);
-  --orange:     #fb923c;
-  --orange2:    #ea6c0a;
-  --orange3:    #7c3510;
-  --orange-dim: rgba(251,146,60,0.1);
-  --text:       #e0e7f5;
-  --text2:      #7d91b8;
-  --text3:      #3d5078;
-  --ff-head:    'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --ff-body:    'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --ff-mono:    'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#000;--bg:#050505;--bg-card:rgba(255,255,255,0.04);--bg-card-hover:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);--border-hover:rgba(255,255,255,0.15);
+  --white:#fff;--text:#f5f5f5;--text-secondary:rgba(255,255,255,0.6);--text-muted:rgba(255,255,255,0.35);
+  --green:#34d399;--green-dark:#059669;--green-glow:rgba(52,211,153,0.12);--green-border:rgba(52,211,153,0.25);
+  --blue:#60a5fa;
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --radius:16px;--radius-sm:10px;--radius-lg:24px;--radius-xl:32px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--black); color: var(--text);
-  font-family: var(--ff-body); font-size: 16px; line-height: 1.7;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(79,142,247,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(79,142,247,0.025) 1px,transparent 1px);
-  background-size: 64px 64px; pointer-events: none; z-index: 0;
-}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{text-decoration:none;color:inherit}button{border:none;cursor:pointer;font-family:inherit;background:none}
+img{max-width:100%;display:block}
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.1rem 3rem;
-  background: rgba(7,9,15,0.9); backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--ff-head); font-size: 1.05rem; font-weight: 800;
-  letter-spacing: -0.03em; color: var(--text); text-decoration: none;
-}
-.nav-logo span { color: var(--orange); }
-.nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-.nav-links a { font-size: 0.875rem; color: var(--text2); text-decoration: none; font-weight: 400; transition: color 0.2s; }
-.nav-links a:hover { color: var(--blue); }
-.nav-cta {
-  background: linear-gradient(135deg, var(--orange2), var(--orange)) !important;
-  color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 7px;
-  font-weight: 600 !important; font-size: 0.85rem !important;
-  transition: opacity 0.2s !important; box-shadow: 0 0 20px rgba(251,146,60,0.25) !important;
-}
-.nav-cta:hover { opacity: 0.85 !important; }
+/* ===== GLOBE BACKGROUND ===== */
+.globe-bg{position:fixed;pointer-events:none;z-index:0}
+.globe-bg--top{top:-300px;right:-200px;width:1000px;height:1000px;background:radial-gradient(ellipse,rgba(52,211,153,0.06) 0%,rgba(96,165,250,0.03) 40%,transparent 70%);border-radius:50%;animation:gPulse 10s ease-in-out infinite}
+.globe-bg--bottom{bottom:-400px;left:-200px;width:800px;height:800px;background:radial-gradient(ellipse,rgba(96,165,250,0.04) 0%,transparent 60%);border-radius:50%;animation:gPulse 12s ease-in-out infinite reverse}
+@keyframes gPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
 
-/* ── HERO ── */
-.hero {
-  position: relative; min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 8rem 2rem 5rem; z-index: 1; overflow: hidden;
-}
-.hero-glow {
-  position: absolute; width: 900px; height: 650px;
-  background: radial-gradient(ellipse at 40% 50%, rgba(91,156,246,0.07) 0%, transparent 55%),
-              radial-gradient(ellipse at 65% 50%, rgba(251,146,60,0.05) 0%, transparent 55%);
-  top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none;
-}
-.badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--orange-dim); border: 1px solid rgba(251,146,60,0.28);
-  color: var(--orange); font-family: var(--ff-mono); font-size: 0.72rem;
-  padding: 0.4rem 1.1rem; border-radius: 100px; margin-bottom: 2.2rem;
-  letter-spacing: 0.05em; animation: fadeUp 0.5s ease both;
-}
-.badge-dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: blink 2s ease infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+/* ===== NAVBAR ===== */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(5,5,5,0.75);backdrop-filter:blur(24px) saturate(1.8);border-bottom:1px solid var(--border);transition:background .3s}
+.navbar__logo{font-size:21px;font-weight:700;letter-spacing:-.4px;color:var(--white)}
+.navbar__logo span{color:var(--green)}
+.navbar__links{display:flex;align-items:center;gap:8px;list-style:none}
+.navbar__links a{font-size:14px;font-weight:500;color:var(--text-secondary);padding:10px 16px;border-radius:8px;transition:color .2s,background .2s;display:flex;align-items:center;gap:6px}
+.navbar__links a:hover{color:var(--white);background:rgba(255,255,255,0.05)}
+.navbar__right{display:flex;align-items:center;gap:12px}
+.btn-ghost{font-size:14px;font-weight:500;color:var(--text-secondary);padding:10px 20px;border-radius:50px;transition:color .2s}
+.btn-ghost:hover{color:var(--white)}
+.btn-green{font-size:14px;font-weight:600;color:var(--black);background:var(--green);padding:10px 24px;border-radius:50px;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-green:hover{background:#4ade80;transform:translateY(-1px);box-shadow:0 8px 32px rgba(52,211,153,.3)}
+.btn-green--lg{font-size:16px;padding:14px 32px}
+.hamburger{display:none;color:var(--white);font-size:24px;padding:8px}
 
-h1 {
-  font-family: var(--ff-head); font-size: clamp(3rem, 7.5vw, 6.5rem);
-  font-weight: 800; letter-spacing: -0.045em; line-height: 1.0;
-  margin-bottom: 1.5rem; animation: fadeUp 0.6s 0.08s ease both;
-}
-h1 em { font-style: normal; color: var(--orange); }
-.hero-sub {
-  font-size: 1.15rem; color: var(--text2); max-width: 550px;
-  line-height: 1.65; font-weight: 400; margin-bottom: 2.5rem;
-  animation: fadeUp 0.6s 0.16s ease both;
-}
-.hero-btns { display: flex; align-items: center; gap: 1rem; animation: fadeUp 0.6s 0.24s ease both; }
-.btn-p {
-  background: linear-gradient(135deg, var(--orange2), var(--orange));
-  color: #fff; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600;
-  font-size: 0.95rem; text-decoration: none; transition: opacity 0.2s, transform 0.2s;
-  box-shadow: 0 4px 24px rgba(251,146,60,0.22);
-}
-.btn-p:hover { opacity: 0.85; transform: translateY(-1px); }
-.btn-g {
-  background: transparent; color: var(--text2); padding: 0.85rem 2rem; border-radius: 8px;
-  font-weight: 500; font-size: 0.95rem; text-decoration: none;
-  border: 1px solid var(--border2); transition: border-color 0.2s, color 0.2s;
-}
-.btn-g:hover { border-color: var(--blue3); color: var(--blue); }
+/* ===== HERO ===== */
+.hero{position:relative;z-index:2;padding:140px 40px 0;text-align:center;overflow:hidden}
+.hero__content{max-width:860px;margin:0 auto}
+.hero h1{font-size:clamp(44px,7vw,84px);font-weight:800;line-height:1;letter-spacing:-3px;margin-bottom:20px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero__sub{font-size:clamp(16px,1.8vw,20px);color:var(--text-secondary);max-width:600px;margin:0 auto 36px;line-height:1.6;font-weight:400}
+.hero__cta{margin-bottom:60px}
 
-/* ── TWIN VISUAL ── */
-.twin {
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  max-width: 880px; width: 100%; margin-top: 4.5rem;
-  animation: fadeUp 0.6s 0.32s ease both;
-}
-.twin-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-.twin-card.ai {
-  border-color: rgba(79,142,247,0.25);
-  background: linear-gradient(135deg, var(--surface), rgba(79,142,247,0.05));
-}
-.tc-label { font-family: var(--ff-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.6rem; }
-.ai .tc-label { color: var(--blue3); }
-.tc-title { font-family: var(--ff-head); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.9rem; }
-.ai .tc-title { color: var(--blue); }
-.dept { display: flex; flex-direction: column; gap: 5px; }
-.di { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text2); padding: 6px 10px; background: rgba(255,255,255,0.025); border-radius: 6px; border: 1px solid var(--border); }
-.di.a { color: rgba(79,142,247,0.9); background: rgba(79,142,247,0.05); border-color: rgba(79,142,247,0.12); }
-.dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
-.di.a .dot { background: var(--blue); }
-.connector { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 1.5rem; }
-.sync-line { width: 1px; height: 100px; background: linear-gradient(to bottom, transparent, var(--blue3), transparent); }
-.sync-pill {
-  background: var(--blue-dim); border: 1px solid rgba(79,142,247,0.3); color: var(--blue);
-  font-family: var(--ff-mono); font-size: 0.6rem; padding: 4px 10px;
-  border-radius: 100px; letter-spacing: 0.08em; white-space: nowrap;
-}
+/* Hero video area */
+.hero__visual{position:relative;max-width:1000px;margin:0 auto;padding-bottom:80px}
+.hero__video-wrapper{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;background:linear-gradient(135deg,rgba(52,211,153,0.05),rgba(96,165,250,0.05));border:1px solid var(--border)}
+.hero__video-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.hero__video-inner video{width:100%;height:100%;object-fit:cover}
+.hero__video-placeholder{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px}
+.hero__play{width:72px;height:72px;border-radius:50%;background:var(--green-glow);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;transition:all .3s;cursor:pointer}
+.hero__play:hover{background:var(--green);transform:scale(1.1);box-shadow:0 0 40px rgba(52,211,153,.3)}
+.hero__play svg{width:24px;height:24px;fill:var(--green)}
+.hero__play:hover svg{fill:var(--black)}
 
-/* ── SHARED ── */
-section { position: relative; z-index: 1; }
-.c { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-.sec-label { font-family: var(--ff-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange2); margin-bottom: 0.9rem; }
-.sec-title { font-family: var(--ff-head); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; margin-bottom: 1rem; }
-.sec-body { font-size: 1rem; color: var(--text2); line-height: 1.7; max-width: 530px; }
-.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.65s ease, transform 0.65s ease; }
-.reveal.on { opacity: 1; transform: none; }
+/* Floating CTA card */
+.hero__floating-card{position:absolute;bottom:20px;right:-20px;background:rgba(10,10,10,0.9);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:14px 20px;display:flex;align-items:center;gap:12px;transition:all .3s;cursor:pointer;z-index:5}
+.hero__floating-card:hover{border-color:var(--green-border);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.hero__floating-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--black);flex-shrink:0}
+.hero__floating-info{text-align:left}
+.hero__floating-info strong{display:block;font-size:14px;font-weight:600;color:var(--white)}
+.hero__floating-info span{font-size:12px;color:var(--text-secondary)}
 
-/* ── PROBLEM ── */
-.problem { padding: 8rem 0; border-top: 1px solid var(--border); }
-.prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 4rem; }
-.pain-list { display: flex; flex-direction: column; gap: 10px; }
-.pain { display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem 1.4rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: border-color 0.2s; }
-.pain:hover { border-color: var(--border2); }
-.pain-ico { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; background: rgba(255,80,60,0.08); border: 1px solid rgba(255,80,60,0.14); display: flex; align-items: center; justify-content: center; font-size: 15px; }
-.pain-t { font-family: var(--ff-head); font-size: 0.92rem; font-weight: 700; margin-bottom: 0.2rem; }
-.pain-d { font-size: 0.83rem; color: var(--text2); line-height: 1.55; }
-.frag-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
-.frag-t { font-family: var(--ff-head); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
-.frag-d { font-size: 0.88rem; color: var(--text2); line-height: 1.6; margin-bottom: 1.5rem; }
-.tool-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1.25rem; }
-.tool-b { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 7px; padding: 10px 8px; text-align: center; }
-.tool-n { font-size: 0.78rem; font-weight: 600; display: block; margin-bottom: 3px; }
-.tool-u { font-size: 0.68rem; color: var(--text3); }
-.missing { background: rgba(251,146,60,0.05); border: 1px dashed rgba(251,146,60,0.3); border-radius: 7px; padding: 0.9rem; text-align: center; font-family: var(--ff-mono); font-size: 0.75rem; color: var(--orange); letter-spacing: 0.03em; }
+/* ===== TRUST BAR + LOGO CAROUSEL ===== */
+.trust-bar{position:relative;z-index:2;padding:60px 40px 40px;text-align:center}
+.trust-bar__tagline{font-size:15px;font-weight:700;color:var(--white);letter-spacing:.5px;margin-bottom:32px}
+.trust-bar__tagline span{color:var(--green)}
+.logo-carousel{overflow:hidden;position:relative;padding:20px 0}
+.logo-carousel::before,.logo-carousel::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.logo-carousel::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+.logo-carousel::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
+.logo-track{display:flex;gap:48px;animation:scroll 30s linear infinite;width:max-content}
+.logo-track:hover{animation-play-state:paused}
+.logo-item{display:flex;align-items:center;justify-content:center;height:40px;opacity:.45;transition:opacity .3s;flex-shrink:0;font-size:18px;font-weight:700;color:var(--white);letter-spacing:-.3px;white-space:nowrap}
+.logo-item:hover{opacity:.8}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* ── SOLUTION ── */
-.solution { padding: 8rem 0; border-top: 1px solid var(--border); }
-.sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-top: 4rem; }
-.steps { display: flex; flex-direction: column; }
-.step { display: flex; gap: 1.2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
-.step:last-child { border-bottom: none; }
-.step-n { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--orange); min-width: 26px; padding-top: 2px; }
-.step-t { font-family: var(--ff-head); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
-.step-d { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
-.arch { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
-.arch-lbl { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem; }
-.arch-layer { padding: 1rem 1.2rem; border-radius: 8px; margin-bottom: 6px; }
-.l1 { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); }
-.l2 { background: rgba(79,142,247,0.07); border: 1px solid rgba(79,142,247,0.18); }
-.al-name { font-family: var(--ff-mono); font-size: 0.67rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.6rem; }
-.l1 .al-name { color: rgba(200,210,230,0.6); }
-.l2 .al-name { color: var(--blue3); }
-.chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.chip { font-size: 0.72rem; padding: 4px 9px; border-radius: 5px; }
-.l1 .chip { background: rgba(255,255,255,0.06); color: rgba(200,215,240,0.85); }
-.l2 .chip { background: rgba(79,142,247,0.1); color: rgba(130,175,255,0.9); }
-.arch-arr { text-align: center; color: var(--text3); padding: 6px 0; }
-.hybrid { margin-top: 1.2rem; padding: 1rem 1.2rem; background: var(--blue-dim); border: 1px solid rgba(79,142,247,0.18); border-radius: 8px; }
-.hybrid-t { font-family: var(--ff-head); font-size: 0.9rem; font-weight: 700; color: var(--orange); margin-bottom: 0.35rem; }
-.hybrid-d { font-size: 0.8rem; color: var(--text2); line-height: 1.55; }
+/* ===== INDUSTRIES / DEPARTMENTS ===== */
+.industries{position:relative;z-index:2;padding:80px 40px 100px}
+.industries__container{max-width:1200px;margin:0 auto}
+.industries h2{font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.15;letter-spacing:-1.5px;text-align:center;margin-bottom:56px}
+.industries__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.industry-card{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--bg-card);border:1px solid var(--border);transition:all .35s;cursor:pointer;display:flex;flex-direction:column}
+.industry-card:hover{border-color:var(--border-hover);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.industry-card__video{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,rgba(52,211,153,0.06),rgba(96,165,250,0.04));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.industry-card__icon{font-size:48px;opacity:.6;transition:all .4s}
+.industry-card:hover .industry-card__icon{opacity:1;transform:scale(1.1)}
+.industry-card__body{padding:24px}
+.industry-card__title{font-size:18px;font-weight:600;margin-bottom:8px;letter-spacing:-.3px}
+.industry-card__desc{font-size:14px;color:var(--text-secondary);line-height:1.55;margin-bottom:16px}
+.industry-card__link{font-size:13px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:6px;transition:gap .2s}
+.industry-card:hover .industry-card__link{gap:10px}
+.industries__cta{text-align:center;margin-top:48px}
 
-/* ── VIDEO SECTION ── */
-.video-sec { padding: 8rem 0; border-top: 1px solid var(--border); background: var(--black2); }
-.video-hd { text-align: center; margin-bottom: 3.5rem; }
-.video-hd .sec-body { margin: 0 auto; text-align: center; }
-.video-wrap {
-  position: relative; max-width: 900px; margin: 0 auto;
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid rgba(251,146,60,0.2);
-  background: var(--surface);
-}
-.video-wrap::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(91,156,246,0.04) 0%, rgba(251,146,60,0.04) 100%);
-  pointer-events: none; z-index: 1;
-}
-.video-wrap video {
-  display: block; width: 100%; height: auto;
-  border-radius: 16px;
-}
-.video-caption {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  margin-top: 1.5rem; font-family: var(--ff-mono); font-size: 0.72rem;
-  color: var(--text3); letter-spacing: 0.06em;
-}
-.video-caption::before, .video-caption::after {
-  content: ''; flex: 1; height: 1px; background: var(--border);
-}
+/* ===== IMPACT METRICS BENTO ===== */
+.impact{position:relative;z-index:2;padding:100px 40px}
+.impact__container{max-width:1200px;margin:0 auto}
+.impact__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:20px}
+.impact h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1.5px}
+.impact__grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:16px}
+.metric-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:40px 32px;transition:all .35s;position:relative;overflow:hidden}
+.metric-card:hover{border-color:var(--green-border);transform:translateY(-3px)}
+.metric-card--featured{grid-column:span 1;grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(180deg,rgba(52,211,153,0.06) 0%,rgba(52,211,153,0.02) 100%);border-color:var(--green-border)}
+.metric-card__number{font-size:clamp(48px,6vw,72px);font-weight:900;line-height:1;letter-spacing:-3px;margin-bottom:16px;background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metric-card__label{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;line-height:1.3}
+.metric-card__desc{font-size:14px;color:var(--text-secondary);line-height:1.55}
+.metric-card__badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-glow);border:1px solid var(--green-border);border-radius:50px;font-size:11px;font-weight:600;color:var(--green);letter-spacing:.5px;text-transform:uppercase;margin-top:16px}
 
-/* ── FEATURES ── */
-.features { padding: 8rem 0; border-top: 1px solid var(--border); }
-.feat-hd { text-align: center; margin-bottom: 3.5rem; }
-.feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-.feat-card { background: var(--black); padding: 2.5rem 2rem; transition: background 0.22s; }
-.feat-card:hover { background: var(--surface); }
-.feat-ico { width: 42px; height: 42px; border-radius: 10px; background: var(--blue-dim); border: 1px solid rgba(79,142,247,0.16); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 1.2rem; }
-.feat-t { font-family: var(--ff-head); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-.feat-d { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
-.feat-tag { margin-top: 1rem; display: inline-block; font-family: var(--ff-mono); font-size: 0.65rem; color: var(--blue3); letter-spacing: 0.06em; background: var(--blue-dim); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(79,142,247,0.12); }
+/* ===== TESTIMONIALS CAROUSEL ===== */
+.testimonials{position:relative;z-index:2;padding:80px 0;overflow:hidden}
+.testimonials__track{display:flex;gap:20px;animation:testimonialScroll 40s linear infinite;width:max-content;padding:0 20px}
+.testimonials__track:hover{animation-play-state:paused}
+@keyframes testimonialScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.testimonial-card{flex-shrink:0;width:420px;padding:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s}
+.testimonial-card:hover{border-color:var(--border-hover)}
+.testimonial-card__quote{font-size:15px;color:var(--text);line-height:1.65;margin-bottom:20px;font-style:italic}
+.testimonial-card__author{font-size:13px;color:var(--text-muted)}
 
-/* ── MARKET ── */
-.market { padding: 8rem 0; border-top: 1px solid var(--border); background: var(--black2); }
-.stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 4rem; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; text-align: center; }
-.stat-n { font-family: var(--ff-head); font-size: 2.4rem; font-weight: 800; color: var(--orange); line-height: 1; margin-bottom: 0.5rem; }
-.stat-l { font-size: 0.85rem; color: var(--text2); }
-.proj { margin-top: 4rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.proj-row { display: grid; grid-template-columns: 70px 1fr 1fr 1.5fr; align-items: center; padding: 1.2rem 2rem; border-bottom: 1px solid var(--border); gap: 1rem; }
-.proj-row:last-child { border-bottom: none; }
-.proj-row.hd { background: rgba(255,255,255,0.02); padding: 0.9rem 2rem; }
-.proj-row.hd > * { font-family: var(--ff-mono); font-size: 0.67rem; letter-spacing: 0.09em; color: var(--text3); text-transform: uppercase; }
-.py { font-family: var(--ff-mono); font-size: 0.85rem; color: var(--orange); font-weight: 500; }
-.pc, .pa { font-size: 0.88rem; color: var(--text2); }
-.pr-wrap { display: flex; align-items: center; gap: 1rem; }
-.pr-track { height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; flex: 1; overflow: hidden; }
-.pr-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--orange3), var(--orange)); }
-.pr { font-family: var(--ff-head); font-size: 0.95rem; font-weight: 700; white-space: nowrap; }
+/* ===== HOW IT WORKS TABS ===== */
+.use-cases{position:relative;z-index:2;padding:100px 40px}
+.use-cases__container{max-width:1200px;margin:0 auto}
+.use-cases h3{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1.5px;text-align:center;margin-bottom:40px}
+.use-cases__tabs{display:flex;justify-content:center;gap:4px;margin-bottom:48px;flex-wrap:wrap}
+.use-cases__tab{padding:10px 22px;font-size:14px;font-weight:500;color:var(--text-muted);border-radius:50px;border:1px solid transparent;transition:all .25s;cursor:pointer}
+.use-cases__tab:hover{color:var(--text-secondary);background:rgba(255,255,255,0.03)}
+.use-cases__tab--active{color:var(--white);background:rgba(255,255,255,0.08);border-color:var(--border)}
+.use-cases__content{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.use-cases__text h4{font-size:28px;font-weight:700;margin-bottom:16px;letter-spacing:-.5px}
+.use-cases__text p{font-size:16px;color:var(--text-secondary);line-height:1.65;margin-bottom:28px}
+.use-cases__image{aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.use-cases__image-icon{font-size:80px;opacity:.3}
 
-/* ── TEAM ── */
-.team { padding: 8rem 0; border-top: 1px solid var(--border); }
-.team-hd { text-align: center; margin-bottom: 4rem; }
-.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 820px; margin: 0 auto; }
-.team-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; transition: border-color 0.2s; }
-.team-card:hover { border-color: rgba(79,142,247,0.25); }
-.avatar { width: 54px; height: 54px; border-radius: 12px; background: var(--blue-dim); border: 1px solid rgba(79,142,247,0.22); display: flex; align-items: center; justify-content: center; font-family: var(--ff-head); font-size: 1rem; font-weight: 800; color: var(--blue); margin-bottom: 1.2rem; }
-.mem-name { font-family: var(--ff-head); font-size: 1.1rem; font-weight: 800; margin-bottom: 0.2rem; }
-.mem-role { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--blue3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.9rem; }
-.mem-bio { font-size: 0.83rem; color: var(--text2); line-height: 1.65; margin-bottom: 1.1rem; }
-.mem-prev { display: flex; flex-wrap: wrap; gap: 6px; }
-.prev-chip { font-size: 0.7rem; padding: 3px 9px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 5px; color: var(--text2); }
-.mem-li { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; color: var(--blue3); text-decoration: none; margin-top: 0.75rem; font-family: var(--ff-mono); transition: color 0.2s; }
-.mem-li:hover { color: var(--blue); }
+/* ===== TRUST SECTION ===== */
+.trust-section{position:relative;z-index:2;padding:80px 40px;text-align:center}
+.trust-section h3{font-size:clamp(24px,3.5vw,36px);font-weight:700;letter-spacing:-1px;margin-bottom:12px}
+.trust-section p{font-size:16px;color:var(--text-secondary);margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto}
 
-/* ── CTA FINAL ── */
-.cta-final {
-  position: relative; overflow: hidden;
-  padding: 0; border-top: 1px solid var(--border);
-}
-.cta-inner {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center; padding: 7rem 2rem 6rem;
-  max-width: 860px; margin: 0 auto;
-}
-.cta-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse 70% 60% at 25% 50%, rgba(91,156,246,0.1) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 55% at 78% 50%, rgba(251,146,60,0.09) 0%, transparent 65%);
-}
-.cta-bg-grid {
-  position: absolute; inset: 0; z-index: 1;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-}
-.cta-eyebrow {
-  font-family: var(--ff-mono); font-size: 0.72rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--orange2); margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 10px;
-}
-.cta-eyebrow::before, .cta-eyebrow::after {
-  content: ''; width: 32px; height: 1px; background: var(--orange3);
-}
-.cta-headline {
-  font-family: var(--ff-head);
-  font-size: clamp(2.6rem, 6vw, 5rem);
-  font-weight: 800; letter-spacing: -0.045em; line-height: 1.02;
-  margin-bottom: 1.5rem; color: var(--text);
-}
-.cta-headline em { font-style: normal; color: var(--orange); }
-.cta-headline strong { color: var(--blue); font-weight: 800; }
-.cta-desc {
-  font-size: 1.1rem; color: var(--text2); max-width: 480px;
-  line-height: 1.7; margin-bottom: 2.8rem;
-}
-.cta-actions {
-  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;
-}
-.cta-btn-main {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: linear-gradient(135deg, var(--orange2), var(--orange));
-  color: #fff; padding: 1rem 2.2rem; border-radius: 10px;
-  font-weight: 700; font-size: 1rem; text-decoration: none;
-  box-shadow: 0 6px 32px rgba(251,146,60,0.28);
-  transition: opacity 0.2s, transform 0.2s;
-}
-.cta-btn-main:hover { opacity: 0.88; transform: translateY(-2px); }
-.cta-btn-main svg { flex-shrink: 0; }
-.cta-btn-sec {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: transparent; color: var(--text2);
-  padding: 1rem 2rem; border-radius: 10px;
-  font-weight: 500; font-size: 1rem; text-decoration: none;
-  border: 1px solid var(--border2);
-  transition: border-color 0.2s, color 0.2s;
-}
-.cta-btn-sec:hover { border-color: var(--blue3); color: var(--blue); }
-.cta-trust {
-  display: flex; align-items: center; gap: 2rem; margin-top: 3rem;
-  flex-wrap: wrap; justify-content: center;
-}
-.cta-trust-item {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--ff-mono); font-size: 0.68rem; color: var(--text3);
-  letter-spacing: 0.06em; text-transform: uppercase;
-}
-.trust-icon {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--blue-dim); border: 1px solid rgba(91,156,246,0.2);
-  display: flex; align-items: center; justify-content: center;
-}
-.trust-icon svg { width: 10px; height: 10px; }
+/* ===== TEAM ===== */
+.team{position:relative;z-index:2;padding:100px 40px}
+.team__container{max-width:1000px;margin:0 auto}
+.team h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1.5px;margin-bottom:12px}
+.team__sub{font-size:16px;color:var(--text-secondary);margin-bottom:48px}
+.team__grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.team-card{padding:40px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);transition:all .35s}
+.team-card:hover{border-color:var(--border-hover);transform:translateY(-3px)}
+.team-card__avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:var(--black);margin-bottom:20px}
+.team-card h4{font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
+.team-card__role{font-size:14px;font-weight:500;color:var(--green);margin-bottom:16px}
+.team-card__bio{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px}
+.team-card__companies{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.team-card__company{font-size:12px;font-weight:500;padding:5px 12px;border-radius:50px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-secondary)}
+.team-card__linkedin{font-size:13px;font-weight:600;color:var(--green);display:inline-flex;align-items:center;gap:4px;transition:color .2s}
+.team-card__linkedin:hover{color:#4ade80}
 
-/* ── FOOTER ── */
-footer { border-top: 1px solid var(--border); padding: 2.2rem 3rem; display: flex; align-items: center; justify-content: space-between; background: var(--black); position: relative; z-index: 1; }
-.footer-brand { font-family: var(--ff-head); font-size: 0.95rem; font-weight: 800; }
-.footer-brand span { color: var(--orange); }
-.footer-copy { font-size: 0.78rem; color: var(--text3); }
-.dpiit { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--text3); font-family: var(--ff-mono); }
-.dpiit-badge { background: rgba(255,190,0,0.08); border: 1px solid rgba(255,190,0,0.2); color: rgba(255,210,60,0.85); font-size: 0.68rem; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; }
+/* ===== CTA ===== */
+.final-cta{position:relative;z-index:2;padding:100px 40px;text-align:center}
+.final-cta h3{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-1.5px;margin-bottom:36px}
+.final-cta h3 em{font-style:normal;color:var(--green)}
 
-/* ── RESPONSIVE ── */
-@media (max-width: 820px) {
-  nav { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
-  .twin, .prob-grid, .sol-grid { grid-template-columns: 1fr; }
-  .feat-grid { grid-template-columns: 1fr; }
-  .stat-grid, .team-grid { grid-template-columns: 1fr; }
-  .proj-row { grid-template-columns: 60px 1fr 1.2fr; }
-  .pa { display: none; }
-  footer { flex-direction: column; gap: 1rem; text-align: center; }
+/* ===== FOOTER ===== */
+.footer{position:relative;z-index:2;padding:60px 40px 40px;border-top:1px solid var(--border)}
+.footer__container{max-width:1200px;margin:0 auto}
+.footer__top{display:grid;grid-template-columns:280px 1fr;gap:60px;margin-bottom:48px}
+.footer__logo{font-size:20px;font-weight:700;margin-bottom:12px}
+.footer__logo span{color:var(--green)}
+.footer__social{display:flex;gap:12px;margin-top:16px}
+.footer__social a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:14px;transition:all .2s}
+.footer__social a:hover{background:rgba(255,255,255,0.1);color:var(--white);border-color:var(--border-hover)}
+.footer__tagline{font-size:14px;font-weight:500;color:var(--text-secondary);margin-bottom:20px}
+.footer__demo-card{display:flex;align-items:center;gap:12px;padding:12px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);transition:all .3s;cursor:pointer;width:fit-content}
+.footer__demo-card:hover{border-color:var(--green-border)}
+.footer__demo-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--black);flex-shrink:0}
+.footer__demo-text{font-size:14px;font-weight:600;color:var(--white)}
+.footer__demo-arrow{color:var(--text-muted);font-size:18px}
+.footer__columns{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.footer__col h5{font-size:13px;font-weight:600;color:var(--white);margin-bottom:16px;letter-spacing:.3px}
+.footer__col a{display:block;font-size:13px;color:var(--text-muted);padding:4px 0;transition:color .2s}
+.footer__col a:hover{color:var(--text-secondary)}
+.footer__bottom{padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer__copy{font-size:12px;color:var(--text-muted)}
+.footer__legal{display:flex;gap:20px}
+.footer__legal a{font-size:12px;color:var(--text-muted);transition:color .2s}
+.footer__legal a:hover{color:var(--text-secondary)}
+
+/* ===== ANIMATIONS ===== */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .industries__grid{grid-template-columns:repeat(2,1fr)}
+  .impact__grid{grid-template-columns:1fr 1fr}
+  .metric-card--featured{grid-row:span 1}
+  .use-cases__content{grid-template-columns:1fr}
+  .footer__top{grid-template-columns:1fr}
+  .footer__columns{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .navbar{padding:0 20px}
+  .navbar__links{display:none}
+  .hamburger{display:block}
+  .hero{padding:120px 20px 0}
+  .industries,.impact,.use-cases,.team,.final-cta,.trust-section{padding-left:20px;padding-right:20px}
+  .industries__grid,.team__grid{grid-template-columns:1fr}
+  .impact__grid{grid-template-columns:1fr}
+  .impact__header{flex-direction:column;text-align:center}
+  .use-cases__tabs{gap:6px}
+  .use-cases__tab{padding:8px 14px;font-size:13px}
+  .footer__columns{grid-template-columns:1fr 1fr}
+  .footer__bottom{flex-direction:column;text-align:center}
+  .hero__floating-card{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <rect x="2" y="8" width="10" height="13" rx="2.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-      <rect x="16" y="8" width="10" height="13" rx="2.5" stroke="#4f8ef7" stroke-width="1.5"/>
-      <path d="M12 14.5h4" stroke="rgba(79,142,247,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 1.5"/>
-    </svg>
-    complet<span>IQ</span>
-  </a>
-  <ul class="nav-links">
+<div class="globe-bg globe-bg--top"></div>
+<div class="globe-bg globe-bg--bottom"></div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar">
+  <a href="#" class="navbar__logo">complete<span>IQ</span></a>
+  <ul class="navbar__links">
     <li><a href="#problem">Problem</a></li>
     <li><a href="#solution">Solution</a></li>
-    <li><a href="#video">In Action</a></li>
-    <li><a href="#features">Features</a></li>
+    <li><a href="#departments">Departments</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#team">Team</a></li>
-    <li><a href="#cta" class="nav-cta">Get Early Access</a></li>
   </ul>
+  <div class="navbar__right">
+    <a href="#video" class="btn-ghost">Watch Demo</a>
+    <a href="#cta" class="btn-green">Get Early Access</a>
+  </div>
+  <button class="hamburger" onclick="document.querySelector('.navbar__links').style.display=document.querySelector('.navbar__links').style.display==='flex'?'none':'flex'">☰</button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="badge"><span class="badge-dot"></span>DPIIT Recognised &middot; Pre-seed Funded</div>
-  <h1>Your Company.<br><em>Now with an AI Twin.</em></h1>
-  <p class="hero-sub">completIQ deploys AI agent teams that mirror every department &#8212; working 24/7 alongside your employees to automate workflows, surface insights, and multiply output.</p>
-  <div class="hero-btns">
-    <a href="#cta" class="btn-p">Get Early Access</a>
-    <a href="#solution" class="btn-g">See How It Works</a>
-  </div>
-  <div class="twin">
-    <div class="twin-card">
-      <div class="tc-label">Your Physical Company</div>
-      <div class="tc-title">Human Workforce</div>
-      <div class="dept">
-        <div class="di"><span class="dot"></span>Marketing Team &middot; 10 people</div>
-        <div class="di"><span class="dot"></span>HR Department &middot; 5 people</div>
-        <div class="di"><span class="dot"></span>Finance &middot; 3 people</div>
-        <div class="di"><span class="dot"></span>Operations &middot; 7 people</div>
-      </div>
-    </div>
-    <div class="connector">
-      <div class="sync-line"></div>
-      <div class="sync-pill">REAL-TIME SYNC</div>
-      <div class="sync-line"></div>
-    </div>
-    <div class="twin-card ai">
-      <div class="tc-label">completIQ AI Layer</div>
-      <div class="tc-title">AI Agent Workforce</div>
-      <div class="dept">
-        <div class="di a"><span class="dot"></span>10 AI Marketing Agents</div>
-        <div class="di a"><span class="dot"></span>5 AI HR Agents</div>
-        <div class="di a"><span class="dot"></span>3 AI Finance Agents</div>
-        <div class="di a"><span class="dot"></span>7 AI Operations Agents</div>
-      </div>
+<!-- ============ HERO ============ -->
+<section class="hero" id="video">
+  <div class="hero__content">
+    <h1>Your Company.<br><em>Now with an AI Twin.</em></h1>
+    <p class="hero__sub">completIQ deploys AI agent teams that mirror every department — working 24/7 alongside your employees to automate workflows, surface insights, and multiply output.</p>
+    <div class="hero__cta">
+      <a href="#cta" class="btn-green btn-green--lg">Get Early Access →</a>
     </div>
   </div>
-</section>
-
-<!-- PROBLEM -->
-<section class="problem" id="problem">
-  <div class="c">
-    <div class="sec-label">The Challenge</div>
-    <h2 class="sec-title">Companies are drowning<br>in inefficiency.</h2>
-    <div class="prob-grid">
-      <div class="pain-list reveal">
-        <div class="pain"><div class="pain-ico">&#x1F4B8;</div><div><div class="pain-t">Rising Manpower Costs</div><div class="pain-d">Headcount scales linearly with workload, but budgets don&#39;t. Every new task requires a new hire.</div></div></div>
-        <div class="pain"><div class="pain-ico">&#x1F422;</div><div><div class="pain-t">Slow Execution Cycles</div><div class="pain-d">Reports that should take hours take days. Approval chains and manual handoffs kill velocity.</div></div></div>
-        <div class="pain"><div class="pain-ico">&#x1F501;</div><div><div class="pain-t">Repetitive Manual Tasks</div><div class="pain-d">Talented people spend 60%+ of their time on work that could and should be automated.</div></div></div>
-        <div class="pain"><div class="pain-ico">&#x1F9F1;</div><div><div class="pain-t">Data Trapped in Silos</div><div class="pain-d">CRM, ERP, HRMS, and email all hold critical intelligence &#8212; none of it talks to each other.</div></div></div>
-      </div>
-      <div class="frag-box reveal">
-        <div class="frag-t">The Fragmentation Problem</div>
-        <div class="frag-d">AI tools exist everywhere &#8212; but they operate in isolation. There&#39;s no unified layer working across your entire company.</div>
-        <div class="tool-grid">
-          <div class="tool-b"><span class="tool-n">ChatGPT</span><span class="tool-u">Writing only</span></div>
-          <div class="tool-b"><span class="tool-n">Zapier</span><span class="tool-u">Automation only</span></div>
-          <div class="tool-b"><span class="tool-n">Notion AI</span><span class="tool-u">Docs only</span></div>
-          <div class="tool-b"><span class="tool-n">HR SaaS</span><span class="tool-u">One dept</span></div>
-          <div class="tool-b"><span class="tool-n">CRM Bot</span><span class="tool-u">Sales only</span></div>
-          <div class="tool-b"><span class="tool-n">Analytics</span><span class="tool-u">Insights only</span></div>
-        </div>
-        <div class="missing">No unified AI company layer exists</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SOLUTION -->
-<section class="solution" id="solution">
-  <div class="c">
-    <div class="sec-label">The Solution</div>
-    <h2 class="sec-title">One platform. Every<br>department. Always on.</h2>
-    <div class="sol-grid">
-      <div class="steps reveal">
-        <div class="step"><div class="step-n">01</div><div><div class="step-t">Onboard Your Company</div><div class="step-d">Connect your org structure, tools, and workflows. completIQ maps every team and role.</div></div></div>
-        <div class="step"><div class="step-n">02</div><div><div class="step-t">Create AI Twin Teams</div><div class="step-d">Department-wise AI agents are deployed &#8212; one per employee, matched to their function and context.</div></div></div>
-        <div class="step"><div class="step-n">03</div><div><div class="step-t">Integrate Your Stack</div><div class="step-d">Connect CRM, ERP, HRMS, Slack, and email. Agents work natively inside your existing tools.</div></div></div>
-        <div class="step"><div class="step-n">04</div><div><div class="step-t">Supervise &amp; Scale</div><div class="step-d">An AI Supervisor Dashboard gives full visibility across all agent activity, workflows, and performance.</div></div></div>
-      </div>
-      <div class="arch reveal">
-        <div class="arch-lbl">Dual-Layer Architecture</div>
-        <div class="arch-layer l1">
-          <div class="al-name">Layer 1 &middot; Physical Company</div>
-          <div class="chips"><span class="chip">Human Strategy</span><span class="chip">Manager Oversight</span><span class="chip">Leadership Vision</span></div>
-        </div>
-        <div class="arch-arr">&#x27F7;</div>
-        <div class="arch-layer l2">
-          <div class="al-name">Layer 2 &middot; completIQ</div>
-          <div class="chips"><span class="chip">AI Agent Teams</span><span class="chip">AI Supervisors</span><span class="chip">AI Memory Layer</span><span class="chip">Workflow Engine</span></div>
-        </div>
-        <div class="hybrid">
-          <div class="hybrid-t">Hybrid Intelligence Model</div>
-          <div class="hybrid-d">Human creativity + AI execution = exponential productivity without sacrificing the human touch.</div>
+  <div class="hero__visual">
+    <div class="hero__video-wrapper">
+      <div class="hero__video-inner">
+        <div class="hero__video-placeholder">
+          <div class="hero__play" onclick="this.parentElement.innerHTML='<video autoplay muted loop playsinline style=&quot;width:100%;height:100%;object-fit:cover&quot;><source src=&quot;demo.mp4&quot; type=&quot;video/mp4&quot;></video>'">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span style="font-size:14px;color:var(--text-muted)">Watch the completIQ platform demo</span>
         </div>
       </div>
     </div>
+    <a href="mailto:shubhankar.singh@completiq.com" class="hero__floating-card">
+      <div class="hero__floating-avatar">cIQ</div>
+      <div class="hero__floating-info">
+        <strong>completIQ</strong>
+        <span>Request a Demo →</span>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- VIDEO -->
-<section class="video-sec" id="video">
-  <div class="c">
-    <div class="video-hd reveal">
-      <div class="sec-label">See It In Action</div>
-      <h2 class="sec-title">Watch how AI agents<br>empower your team.</h2>
-      <p class="sec-body" style="margin: 0 auto 3rem; text-align: center;">From task automation to real-time insights &#8212; see exactly how completIQ AI agents work alongside employees every day.</p>
+<!-- ============ TRUST BAR + LOGO CAROUSEL ============ -->
+<div class="trust-bar">
+  <p class="trust-bar__tagline"><span>DPIIT Recognised</span> · Pre-seed Funded · The First <span>Unified AI Company Layer</span></p>
+  <div class="logo-carousel">
+    <div class="logo-track">
+      <div class="logo-item">Slack</div>
+      <div class="logo-item">Gmail</div>
+      <div class="logo-item">Salesforce CRM</div>
+      <div class="logo-item">SAP ERP</div>
+      <div class="logo-item">HRMS</div>
+      <div class="logo-item">Microsoft 365</div>
+      <div class="logo-item">Notion</div>
+      <div class="logo-item">Google Workspace</div>
+      <div class="logo-item">HubSpot</div>
+      <div class="logo-item">Zoho</div>
+      <div class="logo-item">Jira</div>
+      <div class="logo-item">QuickBooks</div>
+      <div class="logo-item">Slack</div>
+      <div class="logo-item">Gmail</div>
+      <div class="logo-item">Salesforce CRM</div>
+      <div class="logo-item">SAP ERP</div>
+      <div class="logo-item">HRMS</div>
+      <div class="logo-item">Microsoft 365</div>
+      <div class="logo-item">Notion</div>
+      <div class="logo-item">Google Workspace</div>
+      <div class="logo-item">HubSpot</div>
+      <div class="logo-item">Zoho</div>
+      <div class="logo-item">Jira</div>
+      <div class="logo-item">QuickBooks</div>
     </div>
-    <div class="video-wrap reveal">
-      <video controls autoplay muted loop playsinline>
-        <source src="demo.mp4" type="video/mp4">
-        Your browser does not support video playback.
-      </video>
+  </div>
+</div>
+
+<!-- ============ DEPARTMENTS (= Quantified's Industries) ============ -->
+<section class="industries" id="departments">
+  <div class="industries__container">
+    <h2 class="reveal">Built for Every Department in Your Company</h2>
+    <div class="industries__grid">
+      <div class="industry-card reveal">
+        <div class="industry-card__video"><span class="industry-card__icon">📣</span></div>
+        <div class="industry-card__body">
+          <div class="industry-card__title">Marketing AI</div>
+          <div class="industry-card__desc">Campaign creation, performance analysis, content strategy, and competitive intelligence — running autonomously 24/7.</div>
+          <div class="industry-card__link">10 Agents per 10 Marketers →</div>
+        </div>
+      </div>
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="industry-card__video"><span class="industry-card__icon">🧑‍💼</span></div>
+        <div class="industry-card__body">
+          <div class="industry-card__title">HR AI</div>
+          <div class="industry-card__desc">Resume screening, interview scheduling, onboarding workflows, and employee engagement tracking at scale.</div>
+          <div class="industry-card__link">5 Agents per 5 HR Staff →</div>
+        </div>
+      </div>
+      <div class="industry-card reveal reveal-delay-2">
+        <div class="industry-card__video"><span class="industry-card__icon">📊</span></div>
+        <div class="industry-card__body">
+          <div class="industry-card__title">Finance AI</div>
+          <div class="industry-card__desc">Real-time profitability analysis, expense tracking, cash flow forecasting, and audit-ready reporting.</div>
+          <div class="industry-card__link">Matched to Every Finance Exec →</div>
+        </div>
+      </div>
+      <div class="industry-card reveal reveal-delay-3">
+        <div class="industry-card__video"><span class="industry-card__icon">⚙️</span></div>
+        <div class="industry-card__body">
+          <div class="industry-card__title">Operations AI</div>
+          <div class="industry-card__desc">Supply chain visibility, bottleneck detection, vendor coordination, and SLA tracking across the org.</div>
+          <div class="industry-card__link">7 Agents per 7 Ops Managers →</div>
+        </div>
+      </div>
     </div>
-    <div class="video-caption reveal">AI agents in action &mdash; completIQ platform demo</div>
+    <div class="industries__cta">
+      <a href="#cta" class="btn-green btn-green--lg">Get Early Access →</a>
+    </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="c">
-    <div class="feat-hd reveal">
-      <div class="sec-label">AI Agent Departments</div>
-      <h2 class="sec-title">Every function, covered.</h2>
+<!-- ============ IMPACT METRICS BENTO (= Quantified's Stats Grid) ============ -->
+<section class="impact" id="impact">
+  <div class="impact__container">
+    <div class="impact__header">
+      <h2 class="reveal">completIQ Impact for Enterprise Teams</h2>
+      <a href="#cta" class="btn-green">Get Early Access</a>
     </div>
-    <div class="feat-grid reveal">
-      <div class="feat-card"><div class="feat-ico">&#x1F4E3;</div><div class="feat-t">Marketing AI</div><div class="feat-d">Campaign creation, performance analysis, content strategy, and competitive intelligence &#8212; running autonomously 24/7.</div><span class="feat-tag">10 AGENTS PER 10 MARKETERS</span></div>
-      <div class="feat-card"><div class="feat-ico">&#x1F9D1;&#x200D;&#x1F4BC;</div><div class="feat-t">HR AI</div><div class="feat-d">Resume screening, interview scheduling, onboarding workflows, and employee engagement tracking at scale.</div><span class="feat-tag">5 AGENTS PER 5 HR STAFF</span></div>
-      <div class="feat-card"><div class="feat-ico">&#x1F4CA;</div><div class="feat-t">Finance AI</div><div class="feat-d">Real-time profitability analysis, expense tracking, cash flow forecasting, and audit-ready reporting.</div><span class="feat-tag">MATCHED TO EVERY FINANCE EXEC</span></div>
-      <div class="feat-card"><div class="feat-ico">&#x2699;&#xFE0F;</div><div class="feat-t">Operations AI</div><div class="feat-d">Supply chain visibility, bottleneck detection, vendor coordination, and SLA tracking across the org.</div><span class="feat-tag">7 AGENTS PER 7 OPS MANAGERS</span></div>
-      <div class="feat-card"><div class="feat-ico">&#x1F517;</div><div class="feat-t">Deep Integrations</div><div class="feat-d">Native connectors to Slack, Gmail, CRM, ERP, and HRMS. Agents work where your teams already work.</div><span class="feat-tag">ZERO WORKFLOW DISRUPTION</span></div>
-      <div class="feat-card"><div class="feat-ico">&#x1F9E0;</div><div class="feat-t">Role-Based Memory</div><div class="feat-d">Each agent builds contextual memory over time &#8212; learning your company&#39;s language, priorities, and processes.</div><span class="feat-tag">CONTINUOUSLY ADAPTING</span></div>
+    <div class="impact__grid">
+      <div class="metric-card metric-card--featured reveal">
+        <div>
+          <div class="metric-card__number">24/7</div>
+          <div class="metric-card__label">Autonomous AI Agent Operation</div>
+          <div class="metric-card__desc">Every department gets AI agents that work around the clock — no breaks, no delays, no downtime.</div>
+        </div>
+        <div class="metric-card__badge">● Always On</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-1">
+        <div class="metric-card__number">10x</div>
+        <div class="metric-card__label">Output Multiplier Across Departments</div>
+        <div class="metric-card__desc">Scale output without scaling headcount. AI agents multiply the capacity of every team member.</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-2">
+        <div class="metric-card__number">1:1</div>
+        <div class="metric-card__label">Agent-to-Employee Mirror Ratio</div>
+        <div class="metric-card__desc">Every employee gets a matched AI twin that learns their role, context, and workflows.</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-1">
+        <div class="metric-card__number">60%</div>
+        <div class="metric-card__label">Reduction in Repetitive Manual Tasks</div>
+        <div class="metric-card__desc">Free your talented people from the 60%+ of time spent on work that should be automated.</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-2">
+        <div class="metric-card__number">5x</div>
+        <div class="metric-card__label">Faster Execution Cycles</div>
+        <div class="metric-card__desc">Reports in hours, not days. Approvals in minutes, not weeks. AI agents eliminate manual bottlenecks.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- TEAM -->
+<!-- ============ PROBLEM CAROUSEL (= Quantified's Testimonials) ============ -->
+<section class="testimonials" id="problem">
+  <div class="testimonials__track">
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"We spend ₹40 lakhs/month on headcount that scales linearly with workload. Every new task requires a new hire — but budgets don't grow the same way."</div>
+      <div class="testimonial-card__author">— The Rising Manpower Costs Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"Reports that should take hours take days. Approval chains and manual handoffs kill velocity. Our execution cycles are painfully slow."</div>
+      <div class="testimonial-card__author">— The Slow Execution Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"Our talented people spend 60%+ of their time on repetitive work that could and should be automated. It's a massive waste of potential."</div>
+      <div class="testimonial-card__author">— The Repetitive Tasks Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"CRM, ERP, HRMS, and email all hold critical intelligence — but none of it talks to each other. Data is trapped in silos across the company."</div>
+      <div class="testimonial-card__author">— The Data Silo Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"ChatGPT for writing, Zapier for automation, Notion AI for docs, CRM bots for sales — AI tools exist everywhere but operate in isolation."</div>
+      <div class="testimonial-card__author">— The Fragmentation Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"There's no unified AI layer working across our entire company. We need one platform, every department, always on."</div>
+      <div class="testimonial-card__author">— The Unified Layer Gap</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"We spend ₹40 lakhs/month on headcount that scales linearly with workload. Every new task requires a new hire — but budgets don't grow the same way."</div>
+      <div class="testimonial-card__author">— The Rising Manpower Costs Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"Reports that should take hours take days. Approval chains and manual handoffs kill velocity. Our execution cycles are painfully slow."</div>
+      <div class="testimonial-card__author">— The Slow Execution Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"Our talented people spend 60%+ of their time on repetitive work that could and should be automated. It's a massive waste of potential."</div>
+      <div class="testimonial-card__author">— The Repetitive Tasks Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"CRM, ERP, HRMS, and email all hold critical intelligence — but none of it talks to each other. Data is trapped in silos across the company."</div>
+      <div class="testimonial-card__author">— The Data Silo Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"ChatGPT for writing, Zapier for automation, Notion AI for docs, CRM bots for sales — AI tools exist everywhere but operate in isolation."</div>
+      <div class="testimonial-card__author">— The Fragmentation Problem</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-card__quote">"There's no unified AI layer working across our entire company. We need one platform, every department, always on."</div>
+      <div class="testimonial-card__author">— The Unified Layer Gap</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS TABS (= Quantified's "How Teams Use") ============ -->
+<section class="use-cases" id="how-it-works">
+  <div class="use-cases__container">
+    <h3 class="reveal">How completIQ Works</h3>
+    <div class="use-cases__tabs reveal">
+      <button class="use-cases__tab use-cases__tab--active" data-tab="0">Onboard Company</button>
+      <button class="use-cases__tab" data-tab="1">Deploy AI Twins</button>
+      <button class="use-cases__tab" data-tab="2">Integrate Stack</button>
+      <button class="use-cases__tab" data-tab="3">Supervise & Scale</button>
+      <button class="use-cases__tab" data-tab="4">Role-Based Memory</button>
+    </div>
+    <div class="use-cases__panels">
+      <div class="use-cases__panel" data-panel="0">
+        <div class="use-cases__content">
+          <div class="use-cases__text">
+            <h4>Onboard Your Company</h4>
+            <p>Connect your org structure, tools, and workflows. completIQ maps every team and role — understanding your departments, hierarchies, and processes to create a digital twin of your entire organization.</p>
+            <a href="#cta" class="btn-green">Get Early Access →</a>
+          </div>
+          <div class="use-cases__image"><span class="use-cases__image-icon">🏢</span></div>
+        </div>
+      </div>
+      <div class="use-cases__panel" data-panel="1" style="display:none">
+        <div class="use-cases__content">
+          <div class="use-cases__text">
+            <h4>Deploy AI Twin Teams</h4>
+            <p>Department-wise AI agents are deployed — one per employee, matched to their function and context. Marketing gets marketing agents, HR gets HR agents. Each twin mirrors its human counterpart's role.</p>
+            <a href="#cta" class="btn-green">Get Early Access →</a>
+          </div>
+          <div class="use-cases__image"><span class="use-cases__image-icon">🤖</span></div>
+        </div>
+      </div>
+      <div class="use-cases__panel" data-panel="2" style="display:none">
+        <div class="use-cases__content">
+          <div class="use-cases__text">
+            <h4>Integrate Your Stack</h4>
+            <p>Connect CRM, ERP, HRMS, Slack, and email. Agents work natively inside your existing tools — zero workflow disruption. They plug into where your teams already work, not the other way around.</p>
+            <a href="#cta" class="btn-green">Get Early Access →</a>
+          </div>
+          <div class="use-cases__image"><span class="use-cases__image-icon">🔗</span></div>
+        </div>
+      </div>
+      <div class="use-cases__panel" data-panel="3" style="display:none">
+        <div class="use-cases__content">
+          <div class="use-cases__text">
+            <h4>Supervise & Scale</h4>
+            <p>An AI Supervisor Dashboard gives full visibility across all agent activity, workflows, and performance. Scale from one department to your entire company with complete control and transparency.</p>
+            <a href="#cta" class="btn-green">Get Early Access →</a>
+          </div>
+          <div class="use-cases__image"><span class="use-cases__image-icon">📊</span></div>
+        </div>
+      </div>
+      <div class="use-cases__panel" data-panel="4" style="display:none">
+        <div class="use-cases__content">
+          <div class="use-cases__text">
+            <h4>Role-Based Memory</h4>
+            <p>Each AI agent builds contextual memory over time — learning your company's language, priorities, and processes. The longer it works alongside your team, the smarter and more effective it becomes.</p>
+            <a href="#cta" class="btn-green">Get Early Access →</a>
+          </div>
+          <div class="use-cases__image"><span class="use-cases__image-icon">🧠</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST (= Quantified's "Global Enterprises Trust") ============ -->
+<section class="trust-section" id="solution">
+  <h3 class="reveal">Hybrid Intelligence: Human Creativity + AI Execution</h3>
+  <p class="reveal">completIQ doesn't replace your team. It mirrors them — creating a dual-layer architecture where human strategy and AI execution work together for exponential productivity.</p>
+  <a href="#cta" class="btn-green btn-green--lg reveal">See the Architecture →</a>
+</section>
+
+<!-- ============ TEAM ============ -->
 <section class="team" id="team">
-  <div class="c">
-    <div class="team-hd reveal">
-      <div class="sec-label">The Founders</div>
-      <h2 class="sec-title">Built by operators,<br>backed by the government.</h2>
-    </div>
-    <div class="team-grid reveal">
-      <div class="team-card">
-        <div class="avatar">SN</div>
-        <div class="mem-name">Shubhankar N Singh</div>
-        <div class="mem-role">Co-Founder &amp; CEO</div>
-        <div class="mem-bio">MBA from IIM. 9+ years in ATL/BTL/Digital Marketing &#8212; Google Ads, SEO, Meta Ads. Curated &#8377;1,000 Cr annual sales volume plans, achieving ~&#8377;80 Cr monthly revenue.</div>
-        <div class="mem-prev"><span class="prev-chip">American Express</span><span class="prev-chip">Citi Bank</span><span class="prev-chip">Luxury Real Estate</span></div>
-        <a href="https://www.linkedin.com/in/shubhankar-singhb229a811a/" target="_blank" class="mem-li">LinkedIn &#8599;</a>
+  <div class="team__container">
+    <h2 class="reveal">Built by Operators, Backed by the Government</h2>
+    <p class="team__sub reveal">DPIIT-recognised startup building the future of enterprise AI.</p>
+    <div class="team__grid">
+      <div class="team-card reveal">
+        <div class="team-card__avatar">SN</div>
+        <h4>Shubhankar N Singh</h4>
+        <div class="team-card__role">Co-Founder & CEO</div>
+        <div class="team-card__bio">MBA from IIM. 9+ years in ATL/BTL/Digital Marketing — Google Ads, SEO, Meta Ads. Curated ₹1,000 Cr annual sales volume plans, achieving ~₹80 Cr monthly revenue.</div>
+        <div class="team-card__companies">
+          <span class="team-card__company">American Express</span>
+          <span class="team-card__company">Citi Bank</span>
+          <span class="team-card__company">Luxury Real Estate</span>
+        </div>
+        <a href="https://www.linkedin.com/in/shubhankar-singhb229a811a/" target="_blank" class="team-card__linkedin">LinkedIn ↗</a>
       </div>
-      <div class="team-card">
-        <div class="avatar">ST</div>
-        <div class="mem-name">Sudhir Tiwari</div>
-        <div class="mem-role">Co-Founder &amp; CTO</div>
-        <div class="mem-bio">B.Tech/M.Tech Computer Science from AMU. Senior Software Engineer with 9+ years building scalable systems across AI, Big Data, E-commerce, and Cloud infrastructure.</div>
-        <div class="mem-prev"><span class="prev-chip">Walmart Global Tech</span><span class="prev-chip">Oracle Cloud</span><span class="prev-chip">JPMorgan</span></div>
-        <a href="https://www.linkedin.com/in/sudhir-tiwari-14145090/" target="_blank" class="mem-li">LinkedIn &#8599;</a>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-card__avatar">ST</div>
+        <h4>Sudhir Tiwari</h4>
+        <div class="team-card__role">Co-Founder & CTO</div>
+        <div class="team-card__bio">B.Tech/M.Tech Computer Science from AMU. Senior Software Engineer with 9+ years building scalable systems across AI, Big Data, E-commerce, and Cloud infrastructure.</div>
+        <div class="team-card__companies">
+          <span class="team-card__company">Walmart Global Tech</span>
+          <span class="team-card__company">Oracle Cloud</span>
+          <span class="team-card__company">JPMorgan</span>
+        </div>
+        <a href="https://www.linkedin.com/in/sudhir-tiwari-14145090/" target="_blank" class="team-card__linkedin">LinkedIn ↗</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-final" id="cta">
-  <div class="cta-bg"></div>
-  <div class="cta-bg-grid"></div>
-  <div class="cta-inner reveal">
-    <div class="cta-eyebrow">Get Started</div>
-    <h2 class="cta-headline">
-      Ready to see <em>completIQ</em><br>in <strong>action?</strong>
-    </h2>
-    <p class="cta-desc">
-      See how AI agent teams mirror your entire workforce &#8212; automating tasks, surfacing insights, and multiplying output across every department.
-    </p>
-    <div class="cta-actions">
-      <a href="mailto:shubhankar.singh@completiq.com" class="cta-btn-main">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l5.5 5.5L8 12.5M2.5 7H13.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Request a Demo
-      </a>
-      <a href="mailto:shubhankar.singh@completiq.com" class="cta-btn-sec">Investor Enquiries</a>
-    </div>
-    <div class="cta-trust">
-      <div class="cta-trust-item">
-        <div class="trust-icon">
-          <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#5b9cf6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        DPIIT Recognised
-      </div>
-      <div class="cta-trust-item">
-        <div class="trust-icon">
-          <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#5b9cf6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        Pre-seed Funded
-      </div>
-      <div class="cta-trust-item">
-        <div class="trust-icon">
-          <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#5b9cf6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        &#8377;2 Cr Raise in Progress
-      </div>
-    </div>
+<!-- ============ FINAL CTA (= Quantified's "Ready to see in action?") ============ -->
+<section class="final-cta" id="cta">
+  <h3 class="reveal">Ready to see <em>completIQ</em> in action?</h3>
+  <div class="reveal" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px">
+    <a href="mailto:shubhankar.singh@completiq.com" class="btn-green btn-green--lg">Request a Demo →</a>
+    <a href="mailto:shubhankar.singh@completiq.com" class="btn-ghost" style="border:1px solid var(--border);border-radius:50px;padding:14px 32px">Investor Enquiries</a>
+  </div>
+  <div class="reveal" style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap">
+    <span style="font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span> DPIIT Recognised</span>
+    <span style="font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span> Pre-seed Funded</span>
+    <span style="font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span> ₹2 Cr Raise in Progress</span>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">complet<span>IQ</span></div>
-  <div class="footer-copy">&#169; 2025 completIQ &mdash; completiq.com. All rights reserved.</div>
-  <div class="dpiit"><span class="dpiit-badge">DPIIT</span>Government of India Recognised</div>
+<!-- ============ FOOTER (= Quantified's Footer) ============ -->
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__logo">complete<span>IQ</span></div>
+        <div class="footer__social">
+          <a href="https://www.linkedin.com/in/shubhankar-singhb229a811a/" target="_blank" title="LinkedIn">in</a>
+        </div>
+        <p class="footer__tagline" style="margin-top:20px">AI Agent Teams for Enterprise Productivity</p>
+        <a href="mailto:shubhankar.singh@completiq.com" class="footer__demo-card">
+          <div class="footer__demo-avatar">cIQ</div>
+          <div class="footer__demo-text">Get a Demo</div>
+          <span class="footer__demo-arrow">→</span>
+        </a>
+      </div>
+      <div class="footer__columns">
+        <div class="footer__col">
+          <h5>Platform</h5>
+          <a href="#solution">How It Works</a>
+          <a href="#departments">AI Departments</a>
+          <a href="#impact">Impact</a>
+          <a href="#">Integrations</a>
+        </div>
+        <div class="footer__col">
+          <h5>Solutions</h5>
+          <a href="#departments">Marketing AI</a>
+          <a href="#departments">HR AI</a>
+          <a href="#departments">Finance AI</a>
+          <a href="#departments">Operations AI</a>
+        </div>
+        <div class="footer__col">
+          <h5>Company</h5>
+          <a href="#team">About</a>
+          <a href="#team">Founders</a>
+          <a href="mailto:shubhankar.singh@completiq.com">Contact</a>
+          <a href="mailto:shubhankar.singh@completiq.com">Careers</a>
+        </div>
+        <div class="footer__col">
+          <h5>Resources</h5>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#video">Demo</a>
+          <a href="mailto:shubhankar.singh@completiq.com">Investor Deck</a>
+          <a href="mailto:shubhankar.singh@completiq.com">Press Kit</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__copy">© 2025 completIQ — completiq.com. All rights reserved. &nbsp;|&nbsp; 🇮🇳 DPIIT · Government of India Recognised</div>
+      <div class="footer__legal">
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script>
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('on'), i * 90);
-        io.unobserve(e.target);
-      }
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Tab switching
+document.querySelectorAll('.use-cases__tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.use-cases__tab').forEach(t => t.classList.remove('use-cases__tab--active'));
+    tab.classList.add('use-cases__tab--active');
+    const idx = tab.dataset.tab;
+    document.querySelectorAll('.use-cases__panel').forEach(p => {
+      p.style.display = p.dataset.panel === idx ? 'block' : 'none';
     });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  });
+});
 </script>
+
 </body>
 </html>
-

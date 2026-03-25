@@ -144,27 +144,39 @@ img{max-width:100%;display:block}
 .trust-section h3{font-size:clamp(24px,3.5vw,36px);font-weight:700;letter-spacing:-1px;margin-bottom:12px}
 .trust-section p{font-size:16px;color:var(--text-secondary);margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto}
 
-/* ===== TEAM ===== */
-.team{position:relative;z-index:2;padding:100px 40px}
-.team__container{max-width:1000px;margin:0 auto}
-.team h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1.5px;margin-bottom:12px}
-.team__sub{font-size:16px;color:var(--text-secondary);margin-bottom:48px}
-.team__grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.team-card{padding:40px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);transition:all .35s}
-.team-card:hover{border-color:var(--border-hover);transform:translateY(-3px)}
-.team-card__avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:var(--black);margin-bottom:20px}
-.team-card h4{font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
-.team-card__role{font-size:14px;font-weight:500;color:var(--green);margin-bottom:16px}
-.team-card__bio{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px}
-.team-card__companies{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.team-card__company{font-size:12px;font-weight:500;padding:5px 12px;border-radius:50px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-secondary)}
-.team-card__linkedin{font-size:13px;font-weight:600;color:var(--green);display:inline-flex;align-items:center;gap:4px;transition:color .2s}
-.team-card__linkedin:hover{color:#4ade80}
-
-/* ===== CTA ===== */
+/* ===== CTA FORM ===== */
 .final-cta{position:relative;z-index:2;padding:100px 40px;text-align:center}
-.final-cta h3{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-1.5px;margin-bottom:36px}
+.final-cta h3{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-1.5px;margin-bottom:12px}
 .final-cta h3 em{font-style:normal;color:var(--green)}
+.final-cta__sub{font-size:16px;color:var(--text-secondary);max-width:540px;margin:0 auto 48px;line-height:1.6}
+.cta-form-wrapper{max-width:580px;margin:0 auto}
+.cta-form-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:44px 40px;position:relative;overflow:hidden}
+.cta-form-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(52,211,153,0.06),transparent 65%);pointer-events:none}
+.cta-form-card::after{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:180px;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.cta-form{display:flex;flex-direction:column;gap:18px;position:relative;z-index:1}
+.cta-form__row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cta-form__group{display:flex;flex-direction:column;gap:6px}
+.cta-form__group--full{grid-column:span 2}
+.cta-form__label{font-size:13px;font-weight:500;color:var(--text-secondary);text-align:left}
+.cta-form__input,.cta-form__select,.cta-form__textarea{width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--white);font-family:var(--font);font-size:14px;transition:border-color .25s,background .25s;outline:none}
+.cta-form__input::placeholder,.cta-form__textarea::placeholder{color:var(--text-muted)}
+.cta-form__input:focus,.cta-form__select:focus,.cta-form__textarea:focus{border-color:var(--green-border);background:rgba(255,255,255,0.06)}
+.cta-form__select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgba(255,255,255,0.35)' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+.cta-form__select option{background:#111;color:var(--white)}
+.cta-form__textarea{resize:vertical;min-height:80px}
+.cta-form__submit{width:100%;padding:14px 32px;background:var(--green);color:var(--black);font-size:16px;font-weight:700;border:none;border-radius:50px;cursor:pointer;transition:all .25s;margin-top:4px}
+.cta-form__submit:hover{background:#4ade80;transform:translateY(-1px);box-shadow:0 8px 32px rgba(52,211,153,.3)}
+.cta-form__trust{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.cta-form__trust span{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.cta-form__trust-dot{width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block}
+.cta-form__success{display:none;text-align:center;padding:40px 20px}
+.cta-form__success h4{font-size:24px;font-weight:700;margin-bottom:8px;color:var(--green)}
+.cta-form__success p{font-size:15px;color:var(--text-secondary)}
+@media(max-width:768px){
+  .cta-form__row{grid-template-columns:1fr}
+  .cta-form__group--full{grid-column:span 1}
+  .cta-form-card{padding:32px 24px}
+}
 
 /* ===== FOOTER ===== */
 .footer{position:relative;z-index:2;padding:60px 40px 40px;border-top:1px solid var(--border)}
@@ -238,7 +250,7 @@ img{max-width:100%;display:block}
     <li><a href="#departments">Departments</a></li>
     <li><a href="#impact">Impact</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#team">Team</a></li>
+    <li><a href="#cta">Contact</a></li>
   </ul>
   <div class="navbar__right">
     <a href="#video" class="btn-ghost">Watch Demo</a>
@@ -267,7 +279,7 @@ img{max-width:100%;display:block}
         </div>
       </div>
     </div>
-    <a href="mailto:shubhankar.singh@completiq.com" class="hero__floating-card">
+    <a href="#cta" class="hero__floating-card">
       <div class="hero__floating-avatar">cIQ</div>
       <div class="hero__floating-info">
         <strong>completIQ</strong>
@@ -279,7 +291,7 @@ img{max-width:100%;display:block}
 
 <!-- ============ TRUST BAR + LOGO CAROUSEL ============ -->
 <div class="trust-bar">
-  <p class="trust-bar__tagline"><span>DPIIT Recognised</span> · Pre-seed Funded · The First <span>Unified AI Company Layer</span></p>
+  <p class="trust-bar__tagline">The First <span>Unified AI Company Layer</span> for Enterprises</p>
   <div class="logo-carousel">
     <div class="logo-track">
       <div class="logo-item">Slack</div>
@@ -521,51 +533,71 @@ img{max-width:100%;display:block}
   <a href="#cta" class="btn-green btn-green--lg reveal">See the Architecture →</a>
 </section>
 
-<!-- ============ TEAM ============ -->
-<section class="team" id="team">
-  <div class="team__container">
-    <h2 class="reveal">Built by Operators, Backed by the Government</h2>
-    <p class="team__sub reveal">DPIIT-recognised startup building the future of enterprise AI.</p>
-    <div class="team__grid">
-      <div class="team-card reveal">
-        <div class="team-card__avatar">SN</div>
-        <h4>Shubhankar N Singh</h4>
-        <div class="team-card__role">Co-Founder & CEO</div>
-        <div class="team-card__bio">MBA from IIM. 9+ years in ATL/BTL/Digital Marketing — Google Ads, SEO, Meta Ads. Curated ₹1,000 Cr annual sales volume plans, achieving ~₹80 Cr monthly revenue.</div>
-        <div class="team-card__companies">
-          <span class="team-card__company">American Express</span>
-          <span class="team-card__company">Citi Bank</span>
-          <span class="team-card__company">Luxury Real Estate</span>
-        </div>
-        <a href="https://www.linkedin.com/in/shubhankar-singhb229a811a/" target="_blank" class="team-card__linkedin">LinkedIn ↗</a>
-      </div>
-      <div class="team-card reveal reveal-delay-1">
-        <div class="team-card__avatar">ST</div>
-        <h4>Sudhir Tiwari</h4>
-        <div class="team-card__role">Co-Founder & CTO</div>
-        <div class="team-card__bio">B.Tech/M.Tech Computer Science from AMU. Senior Software Engineer with 9+ years building scalable systems across AI, Big Data, E-commerce, and Cloud infrastructure.</div>
-        <div class="team-card__companies">
-          <span class="team-card__company">Walmart Global Tech</span>
-          <span class="team-card__company">Oracle Cloud</span>
-          <span class="team-card__company">JPMorgan</span>
-        </div>
-        <a href="https://www.linkedin.com/in/sudhir-tiwari-14145090/" target="_blank" class="team-card__linkedin">LinkedIn ↗</a>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ FINAL CTA (= Quantified's "Ready to see in action?") ============ -->
+
+
+<!-- ============ FINAL CTA WITH FORM ============ -->
 <section class="final-cta" id="cta">
   <h3 class="reveal">Ready to see <em>completIQ</em> in action?</h3>
-  <div class="reveal" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px">
-    <a href="mailto:shubhankar.singh@completiq.com" class="btn-green btn-green--lg">Request a Demo →</a>
-    <a href="mailto:shubhankar.singh@completiq.com" class="btn-ghost" style="border:1px solid var(--border);border-radius:50px;padding:14px 32px">Investor Enquiries</a>
-  </div>
-  <div class="reveal" style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap">
-    <span style="font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span> DPIIT Recognised</span>
-    <span style="font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span> Pre-seed Funded</span>
-    <span style="font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span> ₹2 Cr Raise in Progress</span>
+  <p class="final-cta__sub reveal">See how AI agent teams mirror your entire workforce — automating tasks, surfacing insights, and multiplying output across every department.</p>
+
+  <div class="cta-form-wrapper reveal">
+    <div class="cta-form-card">
+      <div class="cta-form" id="ctaForm">
+        <div class="cta-form__row">
+          <div class="cta-form__group">
+            <label class="cta-form__label">Full Name *</label>
+            <input type="text" class="cta-form__input" id="formName" placeholder="Your full name" required>
+          </div>
+          <div class="cta-form__group">
+            <label class="cta-form__label">Work Email *</label>
+            <input type="email" class="cta-form__input" id="formEmail" placeholder="you@company.com" required>
+          </div>
+        </div>
+        <div class="cta-form__row">
+          <div class="cta-form__group">
+            <label class="cta-form__label">Company Name *</label>
+            <input type="text" class="cta-form__input" id="formCompany" placeholder="Your company">
+          </div>
+          <div class="cta-form__group">
+            <label class="cta-form__label">Company Size</label>
+            <select class="cta-form__select" id="formSize">
+              <option value="" disabled selected>Select team size</option>
+              <option value="1-10">1–10 employees</option>
+              <option value="11-50">11–50 employees</option>
+              <option value="51-200">51–200 employees</option>
+              <option value="201-500">201–500 employees</option>
+              <option value="500+">500+ employees</option>
+            </select>
+          </div>
+        </div>
+        <div class="cta-form__row">
+          <div class="cta-form__group">
+            <label class="cta-form__label">Job Title</label>
+            <input type="text" class="cta-form__input" id="formTitle" placeholder="e.g. CTO, VP Operations">
+          </div>
+          <div class="cta-form__group">
+            <label class="cta-form__label">Interest</label>
+            <select class="cta-form__select" id="formInterest">
+              <option value="" disabled selected>I'm interested in…</option>
+              <option value="demo">Product Demo</option>
+              <option value="pilot">Pilot Program</option>
+              <option value="invest">Investor Enquiry</option>
+              <option value="partner">Partnership</option>
+            </select>
+          </div>
+        </div>
+        <div class="cta-form__group" style="width:100%">
+          <label class="cta-form__label">Message (optional)</label>
+          <textarea class="cta-form__textarea" id="formMessage" placeholder="Tell us about your team and what you're looking to automate…"></textarea>
+        </div>
+        <button type="button" class="cta-form__submit" id="formSubmit" onclick="handleFormSubmit()">Request a Demo →</button>
+      </div>
+      <div class="cta-form__success" id="formSuccess">
+        <h4>🎉 Thank You!</h4>
+        <p>We've received your request. Our team will reach out within 24 hours to schedule your personalized demo.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -579,7 +611,7 @@ img{max-width:100%;display:block}
           <a href="https://www.linkedin.com/in/shubhankar-singhb229a811a/" target="_blank" title="LinkedIn">in</a>
         </div>
         <p class="footer__tagline" style="margin-top:20px">AI Agent Teams for Enterprise Productivity</p>
-        <a href="mailto:shubhankar.singh@completiq.com" class="footer__demo-card">
+        <a href="#cta" class="footer__demo-card">
           <div class="footer__demo-avatar">cIQ</div>
           <div class="footer__demo-text">Get a Demo</div>
           <span class="footer__demo-arrow">→</span>
@@ -602,8 +634,8 @@ img{max-width:100%;display:block}
         </div>
         <div class="footer__col">
           <h5>Company</h5>
-          <a href="#team">About</a>
-          <a href="#team">Founders</a>
+          <a href="#solution">About</a>
+          <a href="#cta">Request a Demo</a>
           <a href="mailto:shubhankar.singh@completiq.com">Contact</a>
           <a href="mailto:shubhankar.singh@completiq.com">Careers</a>
         </div>
@@ -617,7 +649,7 @@ img{max-width:100%;display:block}
       </div>
     </div>
     <div class="footer__bottom">
-      <div class="footer__copy">© 2025 completIQ — completiq.com. All rights reserved. &nbsp;|&nbsp; 🇮🇳 DPIIT · Government of India Recognised</div>
+      <div class="footer__copy">© 2025 completIQ — completiq.com. All rights reserved.</div>
       <div class="footer__legal">
         <a href="#">Terms & Conditions</a>
         <a href="#">Privacy Policy</a>
@@ -644,6 +676,41 @@ document.querySelectorAll('.use-cases__tab').forEach(tab => {
     });
   });
 });
+
+// Form submission handler
+function handleFormSubmit() {
+  const name = document.getElementById('formName').value.trim();
+  const email = document.getElementById('formEmail').value.trim();
+  const company = document.getElementById('formCompany').value.trim();
+  const size = document.getElementById('formSize').value;
+  const title = document.getElementById('formTitle').value.trim();
+  const interest = document.getElementById('formInterest').value;
+  const message = document.getElementById('formMessage').value.trim();
+
+  // Basic validation
+  if (!name) { alert('Please enter your name.'); document.getElementById('formName').focus(); return; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid work email.'); document.getElementById('formEmail').focus(); return; }
+  if (!company) { alert('Please enter your company name.'); document.getElementById('formCompany').focus(); return; }
+
+  // Build mailto body
+  const subject = encodeURIComponent('completIQ Demo Request — ' + company);
+  const body = encodeURIComponent(
+    'Name: ' + name + '\n' +
+    'Email: ' + email + '\n' +
+    'Company: ' + company + '\n' +
+    'Company Size: ' + (size || 'Not specified') + '\n' +
+    'Job Title: ' + (title || 'Not specified') + '\n' +
+    'Interest: ' + (interest || 'Not specified') + '\n' +
+    'Message: ' + (message || 'N/A') + '\n'
+  );
+
+  // Show success state
+  document.getElementById('ctaForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+
+  // Open mailto
+  window.location.href = 'mailto:shubhankar.singh@completiq.com?subject=' + subject + '&body=' + body;
+}
 </script>
 
 </body>
